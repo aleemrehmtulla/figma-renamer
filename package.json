@@ -1,0 +1,16 @@
+{
+  "name": "figma-renamer",
+  "version": "1.0.0",
+  "description": "auto name figma frames using gpt",
+  "main": "code.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "watch": "npm run build -- --watch"
+  },
+  "author": "aleem!",
+  "license": "",
+  "devDependencies": {
+    "@figma/plugin-typings": "*",
+    "typescript": "*"
+  }
+}

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Export Frame JSON</title>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        background-color: #f5f5f5;
+        display: flex;
+        height: fit-content;
+        transition: background-color 0.3s;
+      }
+
+      button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      button:disabled {
+        background-color: #bbb;
+        cursor: not-allowed;
+      }
+
+      #loadingSpinner {
+        margin-top: 10px;
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div id="keyContainer" style="display: none">
+        <label for="openaiKey">Enter your OpenAI Key:</label>
+        <input type="text" id="openaiKey" name="openaiKey" />
+        <button id="saveKeyButton">Save Key</button>
+      </div>
+
+      <p>Select a frame in Figma, then click the button below:</p>
+      <div style="display: flex; flex-direction: column; align-items: left">
+        <button id="exportButton">Rename Frames</button>
+        <span id="loadingSpinner">Loading...</span>
+      </div>
+      <pre id="output"></pre>
+    </div>
+
+    <script>
+      // Check for the key when the UI initializes (as a fallback)
+      parent.postMessage({ pluginMessage: { type: "get-openai-key" } }, "*");
+
+      document.getElementById("saveKeyButton").onclick = () => {
+        const key = document.getElementById("openaiKey").value;
+
+        if (key.startsWith("sk-")) {
+          parent.postMessage(
+            { pluginMessage: { type: "save-openai-key", key } },
+            "*"
+          );
+          document.getElementById("keyContainer").style.display = "none";
+        } else {
+          alert("Please enter a valid OpenAI Key!");
+        }
+      };
+
+      document.getElementById("exportButton").onclick = () => {
+        document.getElementById("exportButton").disabled = true;
+        document.getElementById("loadingSpinner").style.display = "inline";
+        parent.postMessage({ pluginMessage: { type: "export-json" } }, "*");
+      };
+
+      window.onmessage = (event) => {
+        if (
+          event.data.pluginMessage &&
+          event.data.pluginMessage.type === "no-key-found"
+        ) {
+          alert(
+            "No OpenAI Key found. Please enter your key in the field below."
+          );
+          document.getElementById("keyContainer").style.display = "block";
+        }
+
+        if (
+          event.data.pluginMessage &&
+          event.data.pluginMessage.type === "loading-state"
+        ) {
+          if (event.data.pluginMessage.state === "done") {
+            document.getElementById("exportButton").disabled = false;
+            document.getElementById("loadingSpinner").style.display = "none";
+          }
+        }
+      };
+    </script>
+  </body>
+</html>
