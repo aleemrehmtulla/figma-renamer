@@ -4,7 +4,12 @@ nothing fancy. just a lil hack to make my life easier <:)
 
 tldr: gpt-wrapper that takes some relevant figma json to rename frames in your figma file in ~20 seconds (for avg. file)
 
+**note: the code is kinda wack -- but it works!**
+
 ### Demo!
+
+https://github.com/aleemrehmtulla/figma-namer/assets/60443878/6dff23ed-78aa-43d3-943a-bd66a9695797
+
 
 ### Install the plugin
 
