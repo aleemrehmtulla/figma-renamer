@@ -1,6 +1,8 @@
 // TODO: type this! built in a night & had a bunch of different options since it's recursive
 // const OPENAI_KEY = ""; // you might like this more than input if running locally
 
+const GPT_MODEL = "gpt-3.5-turbo-16k"; // use gpt4 is getting bad results
+const GPT_TEMP = 1.35; // basically creativity level, 1.35 seems good
 const SYSTEM_MESSAGE = `You rename all frame names in a given Figma Frame JSON.
 
 You make '.name' relevant, to make the frame human readable.
@@ -96,12 +98,12 @@ figma.ui.onmessage = async (msg) => {
         Authorization: `Bearer ${OPENAI_KEY}`,
       },
       body: JSON.stringify({
-        model: "gpt-3.5-turbo-16k",
+        model: GPT_MODEL,
         messages: [
           { role: "system", content: SYSTEM_MESSAGE },
           { role: "user", content: JSON.stringify(frameDetails, null, 2) },
         ],
-        temperature: 1.35,
+        temperature: GPT_TEMP,
       }),
     });
     const data = await askGPT.json();
