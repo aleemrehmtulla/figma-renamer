@@ -70,7 +70,7 @@ figma.ui.onmessage = async (msg) => {
 
   if (msg.type === "export-json") {
     if (figma.currentPage.selection.length === 0) {
-      figma.ui.postMessage({ type: "error", message: "No frame selected." });
+      figma.ui.postMessage({ type: "no-frame" });
       return;
     }
 
@@ -78,7 +78,7 @@ figma.ui.onmessage = async (msg) => {
     const selectedNode = figma.currentPage.selection[0];
 
     if (selectedNode.type !== "FRAME") {
-      figma.ui.postMessage({ type: "error", message: "No frame selected." });
+      figma.ui.postMessage({ type: "no-frame" });
       return;
     }
 

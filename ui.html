@@ -57,7 +57,6 @@
     </div>
 
     <script>
-      // Check for the key when the UI initializes (as a fallback)
       parent.postMessage({ pluginMessage: { type: "get-openai-key" } }, "*");
 
       document.getElementById("saveKeyButton").onclick = () => {
@@ -85,10 +84,17 @@
           event.data.pluginMessage &&
           event.data.pluginMessage.type === "no-key-found"
         ) {
-          alert(
-            "No OpenAI Key found. Please enter your key in the field below."
-          );
+          alert("No OpenAI Key found. Enter your key in the field below.");
           document.getElementById("keyContainer").style.display = "block";
+        }
+
+        if (
+          event.data.pluginMessage &&
+          event.data.pluginMessage.type === "no-frame"
+        ) {
+          alert("No frame selected. Select a frame and try again.");
+          document.getElementById("exportButton").disabled = false;
+          document.getElementById("loadingSpinner").style.display = "none";
         }
 
         if (
